@@ -57,5 +57,5 @@ n_duplicates_sleep_day_cleaned
 # merging the hourly_intensities and hourly_steps dataframes
 hourly_exercises <- merge(hourly_intensities, hourly_steps, by = c("Id", "ActivityHour"))
 
-
+# analyzing the daily_activity dataframe
 
