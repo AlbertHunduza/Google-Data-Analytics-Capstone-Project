@@ -503,11 +503,6 @@ print(bar_plot_heart_rate)
 
 
 
-
-# Convert the "Time" column to a proper datetime format
-heart_rate$Time <- as.POSIXct(heart_rate$Time, format = "%m/%d/%Y %I:%M:%S %p")
-
-
 # Convert the "Time" column to a proper datetime format
 heart_rate$Time <- as.POSIXct(heart_rate$Time, format = "%m/%d/%Y %I:%M:%S %p")
 
@@ -520,9 +515,8 @@ average_heart_rate_per_hour <- heart_rate %>%
   summarise(average_heart_rate = mean(Value, na.rm = TRUE))
 
 # Create a line plot for average heart rate per hour of the day
-line_plot_heart_rate <- ggplot(average_heart_rate_per_hour, aes(x = HourOfDay, y = average_heart_rate)) +
-  geom_point(color = "blue") +
-  geom_line(color = "blue") +  # Connect the points with lines
+line_plot_heart_rate <- ggplot(average_heart_rate_per_hour, aes(x = HourOfDay, y = average_heart_rate, group = 1)) +
+  geom_line(color = "blue") +
   labs(title = "Average Heart Rate per Hour of the Day",
        x = "Hour of the Day",
        y = "Average Heart Rate") +
