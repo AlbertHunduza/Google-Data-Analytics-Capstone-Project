@@ -524,3 +524,98 @@ line_plot_heart_rate <- ggplot(average_heart_rate_per_hour, aes(x = HourOfDay, y
 
 # Display the line plot
 print(line_plot_heart_rate)
+
+
+##################
+# Now analyzing across dataframes
+
+# Create a data frame with the number of distinct Ids for each dataframe
+distinct_ids <- data.frame(
+  DataFrame = c("daily_activity", "sleep_day_cleaned", "weight_log", "hourly_exercises", "heart_rate"),
+  DistinctIds = c(
+    n_distinct(daily_activity$Id),
+    n_distinct(sleep_day_cleaned$Id),
+    n_distinct(weight_log$Id),
+    n_distinct(hourly_exercises$Id),
+    n_distinct(heart_rate$Id)
+  )
+)
+
+# Create a bar graph
+bar_graph <- ggplot(distinct_ids, aes(x = DataFrame, y = DistinctIds, fill = DataFrame)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Distinct Ids in Each Dataframe",
+       x = "Dataframe",
+       y = "Number of Distinct Ids") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Display the bar graph
+print(bar_graph)
+
+
+
+# Convert the date columns to a common format
+daily_activity$ActivityDate <- as.Date(daily_activity$ActivityDate, format = "%m/%d/%Y")
+sleep_day_cleaned$SleepDay <- as.Date(sleep_day_cleaned$SleepDay)
+
+# Merge the two dataframes based on 'Id' and matching dates
+merged_data <- inner_join(daily_activity, sleep_day_cleaned, by = c("Id", "ActivityDate" = "SleepDay"))
+
+# Calculate the percentage of time spent in bed actually asleep
+merged_data <- merged_data %>%
+  mutate(PercentageTimeAsleep = (TotalMinutesAsleep / TotalTimeInBed) * 100)
+
+# Select the relevant columns for the correlation matrix
+selected_columns <- merged_data %>%
+  select(
+    VeryActiveDistance,
+    Calories,
+    SedentaryMinutes,
+    TotalMinutesAsleep,
+    PercentageTimeAsleep
+  )
+
+# Calculate the correlation matrix
+correlation_matrix <- cor(selected_columns, use = "complete.obs")
+
+corrplot(correlation_matrix, method = "color", type = "upper", tl.col = "black", tl.srt = 45)
+
+# Print the correlation matrix
+print(correlation_matrix)
+
+
+
+
+# Convert date columns to a common format
+daily_activity$ActivityDate <- as.Date(daily_activity$ActivityDate, format = "%m/%d/%Y")
+sleep_day_cleaned$SleepDay <- as.Date(sleep_day_cleaned$SleepDay)
+weight_log$Date <- as.POSIXct(weight_log$Date, format = "%Y-%m-%d %H:%M:%S")
+
+# Join the dataframes based on 'Id' and matching dates
+merged_data <- daily_activity %>%
+  inner_join(sleep_day_cleaned, by = c("Id")) %>%
+  inner_join(weight_log, by = c("Id"))
+
+# Select the relevant columns
+selected_columns <- merged_data %>%
+  select(Calories, TotalMinutesAsleep, WeightKg, BMI)
+
+# Create scatterplot with regression lines
+scatterplot_calories_vs_minutes_asleep <- ggplot(selected_columns, aes(x = Calories, y = TotalMinutesAsleep)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +  # Add linear regression line
+  labs(title = "Calories vs. Total Minutes Asleep",
+       x = "Calories",
+       y = "Total Minutes Asleep")
+
+scatterplot_calories_vs_bmi <- ggplot(selected_columns, aes(x = Calories, y = BMI)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  # Add linear regression line
+  labs(title = "Calories vs. BMI",
+       x = "Calories",
+       y = "BMI")
+
+# Display the scatterplots with regression lines
+print(scatterplot_calories_vs_minutes_asleep)
+print(scatterplot_calories_vs_bmi)
