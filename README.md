@@ -24,7 +24,7 @@ In the "Analysis" folder, you can find the following files:
 ## Deliverables
 
 In the "Deliverables" folder, you can find the following files:
-1. [Bellabeat_Case_Study_Notebook.pdf](Deliverables/Bellabeat_Case_Study_Notebook.pdf): This PDF document is a comprehensive notebook for team colleagues.
+1. [Bellabeat_Case_Study_Notebook.pdf](Deliverables/Bellabeat_Case_Study_Analysis_Notebook.pdf): This PDF document is a comprehensive notebook for team colleagues.
 2. [Bellabeat_Presentation.pptx](Deliverables/Bellabeat_Presentation.pptx): This PowerPoint presentation is intended for high-level executives.
 
 ## Visualizations
