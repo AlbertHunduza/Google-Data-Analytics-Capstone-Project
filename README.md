@@ -13,7 +13,7 @@ By the end of this project, I have created a portfolio-ready case study that dem
 I played the role of a junior data analyst at Bellabeat, tasked with analyzing smart device data to gain insights into how consumers use non-Bellabeat smart devices. The insights gathered were intended to guide Bellabeat's marketing strategy.
 
 ### Deliverables
-1. [Bellabeat Case Study.pdf](Analysis/Bellabeat%20Case%20Study.pdf): This PDF document contains the full case study scenario and questions.
+1. [Bellabeat Case Study.pdf](Bellabeat%20Case%20Study.pdf): This PDF document contains the full case study scenario and questions.
 
 ## Analysis Files
 
